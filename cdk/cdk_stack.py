@@ -770,7 +770,7 @@ class CdkStack(Stack):
                 'EXTRACTOR': 'TEXTRACT'
             },
             tracing=_lambda.Tracing.ACTIVE, 
-            memory_size=10240
+            memory_size=1024
         )
         fn_step_function_chunk_doc.apply_removal_policy(RemovalPolicy.DESTROY)
 

@@ -16,10 +16,10 @@ from datetime import datetime
 # ██   ██ ██      ██   ██ ██   ██ ██    ██ ██      ██  ██  
 # ██████  ███████ ██████  ██   ██  ██████   ██████ ██   ██ 
 
-CLAUDE_3_7_SONNET = "us.anthropic.claude-3-7-sonnet-20250219-v1:0"
-CLAUDE_3_SONNET = "anthropic.claude-3-sonnet-20240229-v1:0"
-CLAUDE_3_5_HAIKU = "us.anthropic.claude-3-5-haiku-20241022-v1:0"
-CLAUDE_2_1 = "anthropic.claude-v2:1"
+CLAUDE_3_7_SONNET = "apac.anthropic.claude-3-7-sonnet-20250219-v1:0"
+CLAUDE_3_SONNET = "apac.anthropic.claude-3-haiku-20240307-v1:0"
+#CLAUDE_3_5_HAIKU = "us.anthropic.claude-3-5-haiku-20241022-v1:0"
+#CLAUDE_2_1 = "anthropic.claude-v2:1"
 
 
 default_model_id = CLAUDE_3_7_SONNET
@@ -56,7 +56,7 @@ def queryBedrockTextCompletion(prompt, temperature=0, top_p=0):
             "top_k": 250
         })
 
-        modelId = 'anthropic.claude-v2:1'
+        modelId = CLAUDE_3_SONNET
         accept = '*/*'
         contentType = 'application/json'
 
@@ -128,7 +128,7 @@ def queryBedrockMessages(messages, temperature=0, top_p=0, modelId=default_model
             raise Exception(e)
         
 def queryBedrockStreaming(messages, temperature=0, top_p=0, modelId=default_model_id):
-    if modelId == "anthropic.claude-v2:1":
+    if modelId == CLAUDE_3_SONNET:
         prompt = convertMessagesToTextCompletion(messages)
         return queryBedrockTextCompletion(prompt, temperature, top_p)
     else:

@@ -12,13 +12,13 @@ app = cdk.App()
 # web application stack that can only be deployed to us-east-1 as it requires AWS WAF.
 webstack = CdkStackWebHosting(app, 
     "ConnectionsInsights-webapp",
-    env=cdk.Environment(region="us-east-1")
+    env=cdk.Environment(account=os.environ['CDK_DEFAULT_ACCOUNT'],region="us-east-1")
 )
 
 # main application stack which can be deployed to any region that contains the required services and Amazon Bedrock models.
 mainstack = CdkStack(app, 
     "ConnectionsInsights-main",
-    env=cdk.Environment(region=os.environ["CDK_DEPLOY_REGION"]),
+    env=cdk.Environment(account=os.environ['CDK_DEFAULT_ACCOUNT'],region=os.environ["CDK_DEPLOY_REGION"]),
     s3_demo_web_app_bucket=webstack.s3_demo_web_app_bucket
 )
 

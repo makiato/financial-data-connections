@@ -1,3 +1,4 @@
+import aws_cdk as cdk
 from aws_cdk import (
     Stack,
     RemovalPolicy,
@@ -67,6 +68,7 @@ class CdkStackWebHosting(Stack):
 
         # # Create S3 Bucket & CloudFront for hosting demo web application
         s3_demo_web_app_bucket = s3.Bucket(self, f"{project_name}-demo-web-app",
+            bucket_name=cdk.PhysicalName.GENERATE_IF_NEEDED,
             removal_policy=RemovalPolicy.DESTROY,
             auto_delete_objects=True,
             server_access_logs_bucket=s3_server_access_log_bucket_web_app,
