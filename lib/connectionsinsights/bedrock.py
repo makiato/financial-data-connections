@@ -16,13 +16,14 @@ from datetime import datetime
 # ██   ██ ██      ██   ██ ██   ██ ██    ██ ██      ██  ██  
 # ██████  ███████ ██████  ██   ██  ██████   ██████ ██   ██ 
 
-CLAUDE_3_7_SONNET = "apac.anthropic.claude-3-7-sonnet-20250219-v1:0"
-CLAUDE_3_SONNET = "apac.anthropic.claude-3-haiku-20240307-v1:0"
-#CLAUDE_3_5_HAIKU = "us.anthropic.claude-3-5-haiku-20241022-v1:0"
-#CLAUDE_2_1 = "anthropic.claude-v2:1"
+LARGE_MODEL = "apac.anthropic.claude-3-7-sonnet-20250219-v1:0"
+MEDIUM_MODEL = "anthropic.claude-3-sonnet-20240229-v1:0"
+EMBEDDING_MODEL = "amazon.titan-embed-text-v2:0"
+IP_LARGE_MODEL = "apac.anthropic.claude-3-7-sonnet-20250219-v1:0"
+IP_MEDIUM_MODEL = "apac.anthropic.claude-3-sonnet-20240229-v1:0"
 
 
-default_model_id = CLAUDE_3_7_SONNET
+default_model_id = LARGE_MODEL
 
 def convertMessagesToTextCompletion(messages):
     def convertRole(role):
@@ -56,7 +57,8 @@ def queryBedrockTextCompletion(prompt, temperature=0, top_p=0):
             "top_k": 250
         })
 
-        modelId = CLAUDE_3_SONNET
+        modelId = MEDIUM_MODEL
+        #inferenceProfileId = IP_MEDIUM_MODEL
         accept = '*/*'
         contentType = 'application/json'
 
@@ -128,7 +130,8 @@ def queryBedrockMessages(messages, temperature=0, top_p=0, modelId=default_model
             raise Exception(e)
         
 def queryBedrockStreaming(messages, temperature=0, top_p=0, modelId=default_model_id):
-    if modelId == CLAUDE_3_SONNET:
+    print("modelId: ", modelId)
+    if modelId == MEDIUM_MODEL:
         prompt = convertMessagesToTextCompletion(messages)
         return queryBedrockTextCompletion(prompt, temperature, top_p)
     else:
@@ -215,7 +218,7 @@ def generateEmbeddings(prompt):
     bedrock = boto3.client(service_name='bedrock-runtime', endpoint_url = "https://bedrock-runtime."+os.environ["AWS_REGION"]+".amazonaws.com")
     body = json.dumps({"inputText": prompt})
 
-    modelId = 'amazon.titan-embed-text-v1'
+    modelId = EMBEDDING_MODEL
     accept = '*/*'
     contentType = 'application/json'
 
